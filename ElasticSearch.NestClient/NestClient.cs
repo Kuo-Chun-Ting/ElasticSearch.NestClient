@@ -22,9 +22,10 @@ namespace ElasticSearch.NestClient
         /// <summary>
         /// 基本查詢
         /// </summary>
-        /// <param name="type">log type ex:login</param>
-        /// <param name="startTime">參考欄位為@timestamp</param>
-        /// <param name="endTime">參考欄位為@timestamp</param>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
         /// <returns></returns>
         public async Task<List<T>> SearchAsync<T>(string type, DateTime startTime, DateTime endTime) where T : class
         {
@@ -57,15 +58,15 @@ namespace ElasticSearch.NestClient
         }
 
         /// <summary>
-        /// 多重條件查詢
+        /// 符合多個terms的查詢
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="type"></param>
-        /// <param name="fields"></param>
         /// <param name="startTime"></param>
         /// <param name="endTime"></param>
+        /// <param name="fields"></param>
         /// <returns></returns>
-        public async Task<List<T>> SearchByMatchTermsAsync<T>(string type, Dictionary<string, string[]> fields, DateTime startTime, DateTime endTime) where T : class
+        public async Task<List<T>> SearchByMatchTermsAsync<T>(string type, DateTime startTime, DateTime endTime, Dictionary<string, string[]> fields) where T : class
         {
             startTime = DateTime.SpecifyKind(startTime, DateTimeKind.Utc);
             endTime = DateTime.SpecifyKind(endTime, DateTimeKind.Utc);
@@ -111,6 +112,16 @@ namespace ElasticSearch.NestClient
             return null;
         }
 
+        /// <summary>
+        /// 欄位值在特定範圍的查詢
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <param name="field"></param>
+        /// <param name="lowerBound"></param>
+        /// <returns></returns>
         public async Task<List<T>> SearchByGreaterThanAsync<T>(string type, DateTime startTime, DateTime endTime, string field, int lowerBound) where T : class
         {
             startTime = DateTime.SpecifyKind(startTime, DateTimeKind.Utc);
@@ -151,6 +162,17 @@ namespace ElasticSearch.NestClient
             return null;
         }
 
+        /// <summary>
+        /// 多條件組合的查詢
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <param name="field"></param>
+        /// <param name="lowerBound"></param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
         public async Task<List<T>> SearchByMatchTermsGreaterThanAsync<T>(string type, DateTime startTime, DateTime endTime, string field, int lowerBound, Dictionary<string, string[]> fields) where T : class
         {
             startTime = DateTime.SpecifyKind(startTime, DateTimeKind.Utc);
